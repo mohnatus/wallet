@@ -17,6 +17,7 @@ function renderTag(tag) {
 
 export function renderTagsList(tags) {
   const $tagsList = getElement(IDS.tags.list);
+  $tagsList.innerHTML = "";
 
   tags.forEach((tag) => {
     const $tag = renderTag(tag);

@@ -1,4 +1,4 @@
-import { getStore } from ".";
+import { getStore } from "./utils";
 import { notify, notifyError } from "../utils/notifier";
 import { ITEMS_STORE_NAME } from "./constants";
 

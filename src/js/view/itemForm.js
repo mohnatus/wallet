@@ -1,4 +1,4 @@
-import { fields, getState, getTagsWeight } from "../state";
+import { selectWeightedTags } from "../store";
 import { IDS, getElement, getTemplate } from "./elements";
 
 const selectors = {
@@ -11,7 +11,7 @@ function renderSubitemForm() {
   const $subitem = $clone.querySelector(selectors.subitem);
   const $subitemSelect = $subitem.querySelector("select");
 
-  const tags = getState(fields.tags);
+  const tags = selectWeightedTags()
 
   tags.forEach((tag) => {
     const $tag = renderTagOption(tag);
@@ -28,15 +28,9 @@ function renderTagOption(tag) {
   return $option;
 }
 
-export function updateTagsSelect() {
+export function updateTagsSelect(tags) {
   const $tagsSelect = getElement(IDS.itemForm.tagsSelect);
-
   $tagsSelect.innerHTML = "";
-
-  const tags = [...getState(fields.tags)];
-  const tagsWeight = getTagsWeight();
-  tags.sort((a, b) => tagsWeight[b.id] - tagsWeight[a.id]);
-
   tags.forEach((tag) => {
     const $option = renderTagOption(tag);
     $tagsSelect.appendChild($option);
@@ -62,7 +56,7 @@ export function closeNewItemForm() {
   resetNewItemForm();
 }
 
-export function getNewItemFormData() {
+function getNewItemFormData() {
   const $newItemForm = getElement(IDS.itemForm.form);
 
   const fd = new FormData($newItemForm);

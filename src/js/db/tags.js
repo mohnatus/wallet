@@ -1,6 +1,6 @@
-import { getStore } from ".";
 import { notify, notifyError } from "../utils/notifier";
 import { TAGS_STORE_NAME } from "./constants";
+import { getStore } from "./utils";
 
 export function addTagToDb(tag) {
   let tags = getStore(TAGS_STORE_NAME, true);

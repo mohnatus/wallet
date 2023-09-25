@@ -43,7 +43,10 @@ export function addPeriodToList(period) {
   $periodsList.appendChild($period);
 }
 
-export function removePeriodFromList(periodId) {}
+export function removePeriodFromList(periodId) {
+  const $element = document.querySelector(`[data-period-id="${periodId}"]`);
+  $element.remove();
+}
 
 export function initPeriodsList(config) {
   const { onStart, onRemove, onSelect } = config;
@@ -71,10 +74,13 @@ export function initPeriodsList(config) {
 
     const $period = e.target.closest(selectors.period);
     if ($period) {
-      console.log("click", $period.dataset.periodId);
       onSelect(Number($period.dataset.periodId));
     }
   });
 
   $startButton.addEventListener("click", onStart);
+}
+
+export function highlightActivePeriod(period) {
+
 }

@@ -1,4 +1,4 @@
-import { fields, getState } from "../state";
+import { selectTagById } from "../store";
 import { IDS, getElement, getTemplate } from "./elements";
 
 const selectors = {
@@ -23,9 +23,7 @@ function renderSubitem(subitem) {
   $subitem.querySelector(selectors.subitemText).textContent = subitem.text;
   $subitem.querySelector(selectors.subitemPrice).textContent = subitem.price;
 
-  const tags = getState(fields.tags);
-
-  const subitemTag = tags.find((tag) => tag.id === subitem.tag);
+  const subitemTag = selectTagById(subitem.tag)
   $subitem.querySelector(selectors.subitemTag).textContent =
     subitemTag?.name || "";
 
@@ -40,9 +38,7 @@ function renderItem(item) {
   $item.querySelector(selectors.itemText).textContent = item.text;
   $item.querySelector(selectors.itemPrice).textContent = item.price;
 
-  const tags = getState(fields.tags);
-
-  const itemTag = tags.find((tag) => tag.id === item.tag);
+  const itemTag = selectTagById(item.tag);
   $item.querySelector(selectors.itemTag).textContent = itemTag?.name || "";
 
   if (item.subitems?.length > 0) {
