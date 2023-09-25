@@ -1,4 +1,5 @@
-import { IDS, getElement } from "./elements";
+import { formatDate } from "../utils/date";
+import { IDS, getElement, getTemplate } from "./elements";
 
 const selectors = {
   period: ".period",
@@ -7,19 +8,50 @@ const selectors = {
   periodRemove: ".period-remove",
 };
 
-export function renderPeriodsList() {}
+function renderPeriod(period, nextPeriod) {
+  const $clone = getTemplate(IDS.periods.periodTemplate);
 
-export function addPeriodToList(period) {}
+  const $period = $clone.querySelector(selectors.period);
+  $period.dataset.periodId = period.id;
+
+  const start = new Date(period.createdAt);
+  const end = nextPeriod ? new Date(nextPeriod.createdAt) : null;
+
+  $period.querySelector(selectors.periodStart).textContent = `с ${formatDate(
+    start
+  )}`;
+  $period.querySelector(selectors.periodEnd).textContent = end
+    ? `по ${formatDate(end)}`
+    : `...`;
+
+  return $period;
+}
+
+export function renderPeriodsList(periods) {
+  const $periodsList = getElement(IDS.periods.list);
+  $periodsList.innerHTML = "";
+
+  periods.forEach((period, i) => {
+    const $period = renderPeriod(period, periods[i + 1]);
+    $periodsList.appendChild($period);
+  });
+}
+
+export function addPeriodToList(period) {
+  const $periodsList = getElement(IDS.periods.list);
+  const $period = renderPeriod(period);
+  $periodsList.appendChild($period);
+}
 
 export function removePeriodFromList(periodId) {}
 
 export function initPeriodsList(config) {
-  const { onStart, onRemove } = config;
+  const { onStart, onRemove, onSelect } = config;
 
-  const $toggleButton = getElement(IDS.period.toggleButton);
-  const $periodsSidebar = getElement(IDS.period.aside);
-  const $periodsList = getElement(IDS.period.list);
-  const $startButton = getElement(IDS.period.startButton);
+  const $toggleButton = getElement(IDS.periods.toggleButton);
+  const $periodsSidebar = getElement(IDS.periods.aside);
+  const $periodsList = getElement(IDS.periods.list);
+  const $startButton = getElement(IDS.periods.startButton);
 
   $toggleButton.addEventListener("click", () => {
     if ($periodsSidebar.hasAttribute("data-open")) {
@@ -30,10 +62,17 @@ export function initPeriodsList(config) {
   });
 
   $periodsList.addEventListener("click", (e) => {
-    const $removeButton = e.target.closest(selectors.period);
+    const $removeButton = e.target.closest(selectors.periodRemove);
     if ($removeButton) {
-      const $tag = e.target.closest(selectors.period);
-      onRemove(Number($tag.dataset.periodId));
+      const $period = e.target.closest(selectors.period);
+      onRemove(Number($period.dataset.periodId));
+      return;
+    }
+
+    const $period = e.target.closest(selectors.period);
+    if ($period) {
+      console.log("click", $period.dataset.periodId);
+      onSelect(Number($period.dataset.periodId));
     }
   });
 

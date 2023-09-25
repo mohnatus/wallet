@@ -58,6 +58,7 @@ function renderItem(item) {
 
 export function renderItemsList(items) {
   const $itemsList = getElement(IDS.items.list);
+  $itemsList.innerHTML = "";
 
   items.forEach((item) => {
     const $item = renderItem(item);

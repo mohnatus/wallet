@@ -1,5 +1,6 @@
 import { initDB } from "./js/db";
 import { addItemToDb, removeItemFromDb } from "./js/db/items";
+import { addPeriodToDb } from "./js/db/periods";
 import { addTagToDb, removeTagFromDb } from "./js/db/tags";
 import * as state from "./js/state";
 import { notifyError } from "./js/utils/notifier";
@@ -14,7 +15,11 @@ import {
   removeItemFromList,
   renderItemsList,
 } from "./js/view/items";
-import { initPeriodsList, renderPeriodsList } from "./js/view/periods";
+import {
+  addPeriodToList,
+  initPeriodsList,
+  renderPeriodsList,
+} from "./js/view/periods";
 import { closeNewTagForm, initNewTagForm } from "./js/view/tagForm";
 import {
   addTagToList,
@@ -41,7 +46,8 @@ state.subscribe(state.fields.tags, state.events.remove, (tag) => {
 });
 
 state.subscribe(state.fields.items, state.events.update, (items) => {
-  renderItemsList(items);
+  const periodItems = state.getPeriodItems();
+  renderItemsList(periodItems);
   updateTagsSelect();
 });
 state.subscribe(state.fields.items, state.events.add, (item) => {
@@ -56,13 +62,37 @@ state.subscribe(state.fields.items, state.events.remove, (item) => {
   updateTagsSelect();
 });
 
-state.subscribe(state.fields.period, state.events.update, (periods) => {
+state.subscribe(state.fields.periods, state.events.update, (periods) => {
   renderPeriodsList(periods);
 });
+state.subscribe(state.fields.periods, state.events.add, (period) => {
+  addPeriodToList(period);
+  addPeriodToDb(period);
+  state.setActivePeriod(period);
+});
+
+state.subscribe(
+  state.fields.activePeriod,
+  state.events.update,
+  (activePeriod) => {
+    const periodItems = state.getPeriodItems();
+    renderItemsList(periodItems);
+  }
+);
 
 // Database
 initDB().then(({ tags, items, periods }) => {
-  state.init({ tags, items, periods });
+  const periodsList = periods;
+  if (periods.length === 0) {
+    const basePeriod = {
+      id: 0,
+      createdAt: null,
+    };
+    periodsList.push(basePeriod);
+    addPeriodToDb(basePeriod);
+  }
+
+  state.init({ tags, items, periods: periodsList });
 });
 
 // Init
@@ -140,5 +170,10 @@ initPeriodsList({
     const periods = state.getState(state.fields.periods);
     const period = periods.find((p) => p.id === periodId);
     state.remove(state.fields.periods, period);
+  },
+  onSelect: (periodId) => {
+    const periods = state.getState(state.fields.periods);
+    const period = periods.find((p) => p.id === periodId);
+    state.setActivePeriod(period);
   },
 });

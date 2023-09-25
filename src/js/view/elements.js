@@ -30,7 +30,7 @@ export const IDS = {
     closeButton: "close-new-tag-dialog",
   },
 
-  period: {
+  periods: {
     toggleButton: 'periods-toggle',
     startButton: 'start-period',
     aside: 'periods-sidebar',

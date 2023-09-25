@@ -86,7 +86,7 @@ h1 {
 
 .items-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 15px;
 }
 
@@ -164,4 +164,9 @@ h1 {
 
 .periods-sidebar[data-open] {
   transform: translateX(0);
+}
+
+.periods-list {
+  display: flex;
+  flex-direction: column-reverse;
 }
