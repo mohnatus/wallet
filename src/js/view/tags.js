@@ -47,4 +47,15 @@ export function initTagsList(config) {
       onRemove(Number($tag.dataset.tagId));
     }
   });
+
+  const $tagsToggleButton = getElement(IDS.tags.toggleListBtn);
+  const $tagsSidebar = getElement(IDS.tags.aside);
+
+  $tagsToggleButton.addEventListener("click", () => {
+    if ($tagsSidebar.hasAttribute("data-open")) {
+      $tagsSidebar.removeAttribute("data-open");
+    } else {
+      $tagsSidebar.setAttribute("data-open", "true");
+    }
+  });
 }

@@ -25,6 +25,27 @@ export function getState(field) {
   return state[field];
 }
 
+export function getAllItems() {
+  const items = [];
+  state.items.forEach((item) => {
+    items.push(item);
+    items.push(...item.subitems);
+  });
+  return items;
+}
+
+export function getTagsWeight() {
+  const items = getAllItems();
+  const weight = {};
+  state.tags.forEach((tag) => {
+    weight[tag.id] = 0;
+  });
+  items.forEach((item) => {
+    weight[item.tag] += 1;
+  });
+  return weight;
+}
+
 export function getId(field) {
   return ++lastId[field];
 }

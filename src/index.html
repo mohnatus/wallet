@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <template id="item-tmpl">
@@ -86,24 +86,34 @@
     </dialog>
 
     <div class="page">
-      <h1>Все траты</h1>
+      <header>
+        <button id="tags-toggle">Теги</button>
+      </header>
 
-      <div class="actions">
-        <button class="action" id="add-item" type="button">
-          Добавить трату
-        </button>
+      <aside id="tags-sidebar" class="tags-sidebar">
         <button class="action" id="add-tag" type="button">Добавить тег</button>
-      </div>
 
-      <div class="tags-block">
-        <h2>Теги</h2>
         <div class="tags-list" id="tags"></div>
-      </div>
+      </aside>
 
-      <div class="items-block">
-        <h2>Траты</h2>
-        <div id="items" class="items-list"></div>
-      </div>
+      <main>
+        <div class="container">
+          <div data-view="all">
+            <h1>Все траты</h1>
+
+            <div class="actions">
+              <button class="action" id="add-item" type="button">
+                Добавить трату
+              </button>
+            </div>
+
+            <div class="items-block">
+              <h2>Траты</h2>
+              <div id="items" class="items-list"></div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="./script.js" type="module"></script>

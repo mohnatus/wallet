@@ -1,3 +1,5 @@
+import { fields, getState } from "../state";
+import { notifyError } from "../utils/notifier";
 import { IDS, getElement } from "./elements";
 
 function resetNewTagForm() {
@@ -30,12 +32,25 @@ export function initNewTagForm(config) {
   const $addTagButton = getElement(IDS.tagForm.addButton);
   const $closeDialogButton = getElement(IDS.tagForm.closeButton);
 
-  console.log($addTagButton)
-
   $newTagForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    onSubmit(getNewTagFormData());
+    const formData = getNewTagFormData()
+    if (!formData.name) {
+        notifyError('Не заполнено поле name', { formData })
+        return 
+    }
+
+    const tags = getState(fields.tags)
+
+    const isDouble = tags.some(t => t.name === formData.name);
+
+    if (isDouble) {
+        notifyError(`Тег с именем ${formData.name} уже добавлен`, { formData })
+        return 
+    }
+
+    onSubmit(formData);
   });
 
   $addTagButton.addEventListener("click", () => {

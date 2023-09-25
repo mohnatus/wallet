@@ -41,15 +41,18 @@ state.subscribe(state.fields.tags, state.events.remove, (tag) => {
 
 state.subscribe(state.fields.items, state.events.update, (items) => {
   renderItemsList(items);
+  updateTagsSelect();
 });
 state.subscribe(state.fields.items, state.events.add, (item) => {
   addItemToList(item);
   closeNewItemForm();
   addItemToDb(item);
+  updateTagsSelect();
 });
 state.subscribe(state.fields.items, state.events.remove, (item) => {
   removeItemFromList(item.id);
   removeItemFromDb(item);
+  updateTagsSelect();
 });
 
 // Database

@@ -19,6 +19,8 @@ export const IDS = {
   tags: {
     list: "tags",
     template: "tag-tmpl",
+    aside: "tags-sidebar",
+    toggleListBtn: "tags-toggle",
   },
 
   tagForm: {

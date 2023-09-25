@@ -1,4 +1,4 @@
-import { fields, getState } from "../state";
+import { fields, getState, getTagsWeight } from "../state";
 import { IDS, getElement, getTemplate } from "./elements";
 
 const selectors = {
@@ -33,7 +33,9 @@ export function updateTagsSelect() {
 
   $tagsSelect.innerHTML = "";
 
-  const tags = getState(fields.tags);
+  const tags = [...getState(fields.tags)];
+  const tagsWeight = getTagsWeight();
+  tags.sort((a, b) => tagsWeight[b.id] - tagsWeight[a.id]);
 
   tags.forEach((tag) => {
     const $option = renderTagOption(tag);
