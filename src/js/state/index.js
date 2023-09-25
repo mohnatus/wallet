@@ -1,6 +1,7 @@
 export const fields = {
   items: "items",
   tags: "tags",
+  periods: "periods",
 };
 
 export const events = {
@@ -12,11 +13,13 @@ export const events = {
 const state = {
   items: [],
   tags: [],
+  periods: [],
 };
 
 const lastId = {
   items: 0,
   tags: 0,
+  periods: 0,
 };
 
 const callbacks = {};
@@ -67,17 +70,28 @@ export function subscribe(field, event, cb) {
   callbacks[field][event].push(cb);
 }
 
-export function init({ tags: tagsList, items: itemsList }) {
+export function init({
+  tags: tagsList,
+  items: itemsList,
+  periods: periodsList,
+}) {
   if (tagsList.length > 0) {
     lastId.tags = tagsList[tagsList.length - 1].id;
     state.tags = tagsList;
-    onChange(fields.tags, events.update, tagsList);
-  }
 
-  if (itemsList.length > 0) {
-    lastId.items = itemsList[itemsList.length - 1].id;
-    state.items = itemsList;
+    if (itemsList.length > 0) {
+      lastId.items = itemsList[itemsList.length - 1].id;
+      state.items = itemsList;
+    }
+
+    if (periodsList.length > 0) {
+      lastId.periods = periodsList[periodsList.length - 1].id;
+      state.periods = periodsList;
+    }
+
+    onChange(fields.tags, events.update, tagsList);
     onChange(fields.items, events.update, itemsList);
+    onChange(fields.periods, events.update, periodsList);
   }
 }
 

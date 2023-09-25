@@ -29,6 +29,14 @@ export const IDS = {
     addButton: "add-tag",
     closeButton: "close-new-tag-dialog",
   },
+
+  period: {
+    toggleButton: 'periods-toggle',
+    startButton: 'start-period',
+    aside: 'periods-sidebar',
+    list: 'periods-list',
+    periodTemplate: 'period-tmpl'
+  }
 };
 
 const cache = {};

@@ -14,6 +14,7 @@ import {
   removeItemFromList,
   renderItemsList,
 } from "./js/view/items";
+import { initPeriodsList, renderPeriodsList } from "./js/view/periods";
 import { closeNewTagForm, initNewTagForm } from "./js/view/tagForm";
 import {
   addTagToList,
@@ -55,13 +56,16 @@ state.subscribe(state.fields.items, state.events.remove, (item) => {
   updateTagsSelect();
 });
 
+state.subscribe(state.fields.period, state.events.update, (periods) => {
+  renderPeriodsList(periods);
+});
+
 // Database
-initDB().then(({ tags, items }) => {
-  state.init({ tags, items });
+initDB().then(({ tags, items, periods }) => {
+  state.init({ tags, items, periods });
 });
 
 // Init
-console.log("init");
 initNewItemForm({
   onSubmit: (formData) => {
     const { text, price, tag, subitems } = formData;
@@ -122,5 +126,19 @@ initTagsList({
       return;
     }
     state.remove(state.fields.tags, tag);
+  },
+});
+initPeriodsList({
+  onStart: () => {
+    const newPeriod = {
+      id: state.getId(state.fields.periods),
+      createdAt: +new Date(),
+    };
+    state.add(state.fields.periods, newPeriod);
+  },
+  onRemove: (periodId) => {
+    const periods = state.getState(state.fields.periods);
+    const period = periods.find((p) => p.id === periodId);
+    state.remove(state.fields.periods, period);
   },
 });

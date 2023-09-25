@@ -51,6 +51,15 @@
       </div>
     </template>
 
+    <template id="period-tmpl">
+      <div class="period">
+        <div class="period-start"></div>
+        <div class="period-end"></div>
+
+        <button class="period-remove">&times;</button>
+      </div>
+    </template>
+
     <dialog id="new-item-dialog">
       <div class="dialog-wrapper">
         <button class="dialog-close" id="close-new-item-dialog" type="button">
@@ -87,6 +96,7 @@
 
     <div class="page">
       <header>
+        <button id="periods-toggle">Периоды</button>
         <button id="tags-toggle">Теги</button>
       </header>
 
@@ -94,6 +104,11 @@
         <button class="action" id="add-tag" type="button">Добавить тег</button>
 
         <div class="tags-list" id="tags"></div>
+      </aside>
+
+      <aside id="periods-sidebar" class="periods-sidebar">
+        <button id="start-period">Начать новый период</button>
+        <div id="periods-list" class="periods-list"></div>
       </aside>
 
       <main>
